@@ -4,60 +4,56 @@ const casas = [
     description: "Una casa bonita en el bosque",
     img: "./assets/img/casas/casa1.jpg",
     precio: 100000,
+    categoria: "offer",
   },
   {
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
     precio: 170000,
+    categoria: "remate",
+  },
+  {
+    name: "Casa 2",
+    description: "Una casa bonita en la playa",
+    img: "./assets/img/casas/casa1.jpg",
+    precio: 170000,
+    categoria: "remate",
+  },
+  {
+    name: "Casa 2",
+    description: "Una casa bonita en la playa",
+    img: "./assets/img/casas/casa1.jpg",
+    precio: 170000,
+    categoria: "remate",
+  },
+  {
+    name: "Casa 2",
+    description: "Una casa bonita en la playa",
+    img: "./assets/img/casas/casa1.jpg",
+    precio: 170000,
+    categoria: "remate",
+  },
+  {
+    name: "Casa 2",
+    description: "Una casa bonita en la playa",
+    img: "./assets/img/casas/casa1.jpg",
+    precio: 170000,
+    categoria: "barata",
   },
   {
     name: "Casa 3",
     description: "Una casa bonita en la ciudad",
     img: "./assets/img/casas/casa1.jpg",
     precio: 150000,
-  },
-];
-
-const casasOferta = [
-  {
-    name: "Casa 1 oferta",
-    description: "Una casa bonita en el bosque",
-    img: "./assets/img/casas/casa_oferta.jpg",
-    precio: 80000,
+    categoria: "list",
   },
   {
-    name: "Casa 2 oferta",
-    description: "Una casa bonita en la playa",
-    img: "./assets/img/casas/casa_oferta.jpg",
-    precio: 85000,
-  },
-  {
-    name: "Casa 3 oferta",
+    name: "Casa 3",
     description: "Una casa bonita en la ciudad",
-    img: "./assets/img/casas/casa_oferta.jpg",
-    precio: 70000,
-  },
-];
-
-const casasRemate = [
-  {
-    name: "Casa 1 remate",
-    description: "Una casa bonita en remate",
-    img: "./assets/img/casas/casa_remate.jpg",
-    precio: 10000,
-  },
-  {
-    name: "Casa 2 remate",
-    description: "Una daddasd bonita en la playa",
-    img: "./assets/img/casas/casa_remate.jpg",
-    precio: 25000,
-  },
-  {
-    name: "Casa 3 remate",
-    description: "Una casa fea en la ciudad",
-    img: "./assets/img/casas/casa_remate.jpg",
-    precio: 50000,
+    img: "./assets/img/casas/casa1.jpg",
+    precio: 150000,
+    categoria: "prefa",
   },
 ];
 
@@ -65,6 +61,8 @@ const sections = [
   { title: "Encuentra la casa ideal para ti", id: "houses-list" },
   { title: "Casas en oferta", id: "houses-offer" },
   { title: "Casas en remate", id: "houses-remate" },
+  { title: "Casas Baratas", id: "houses-barata" },
+  { title: "Casas Prefabricadas", id: "houses-prefa" },
 ];
 
 const renderHouses = (array, section) => {
@@ -99,6 +97,29 @@ const renderHouses = (array, section) => {
   housesList.innerHTML = housesHTML;
 };
 
+// separa las casas en diferentes arreglos
+const separarCasas = (array) => {
+  let casasPorCategoria = {};
+  /*
+    {
+      offer: [casas],
+      list: [casas],
+      prefa: [casas],
+      ...
+    }
+  */
+
+  // filtra las casas por categoria y los añade al arreglo correspondiente
+  for (const casa of array) {
+    casasPorCategoria[casa.categoria] ??= [];
+    casasPorCategoria[casa.categoria].push(casa);
+  }
+
+  for (const key in casasPorCategoria) {
+    renderHouses(casasPorCategoria[key], `#houses-${key}`);
+  }
+};
+
 const renderSections = () => {
   const main = document.querySelector("main");
   let html = "";
@@ -123,6 +144,4 @@ const renderSections = () => {
 renderSections();
 
 // llamado de funcion
-renderHouses(casas, "#houses-list");
-renderHouses(casasOferta, "#houses-offer");
-renderHouses(casasRemate, "#houses-remate");
+separarCasas(casas);
