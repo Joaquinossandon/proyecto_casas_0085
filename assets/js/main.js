@@ -31,7 +31,7 @@ const casas = [
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
-    precio: 170000,
+    precio: 20000,
     categoria: "remate",
   },
   {
@@ -69,6 +69,7 @@ const renderHouses = (array, section) => {
   let housesHTML = "";
 
   for (const casa of array) {
+    console.log(casa)
     const houseHTML = `
         <div class="col">
                 <div class="card">
