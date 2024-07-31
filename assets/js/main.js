@@ -1,5 +1,6 @@
 const casas = [
   {
+    id: 1,
     name: "Casa 1",
     description: "Una casa bonita en el bosque",
     img: "./assets/img/casas/casa1.jpg",
@@ -7,6 +8,7 @@ const casas = [
     categoria: "offer",
   },
   {
+    id: 2,
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
@@ -14,6 +16,7 @@ const casas = [
     categoria: "remate",
   },
   {
+    id: 3,
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
@@ -21,6 +24,7 @@ const casas = [
     categoria: "remate",
   },
   {
+    id: 4,
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
@@ -28,6 +32,7 @@ const casas = [
     categoria: "remate",
   },
   {
+    id: 5,
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
@@ -35,6 +40,7 @@ const casas = [
     categoria: "remate",
   },
   {
+    id: 6,
     name: "Casa 2",
     description: "Una casa bonita en la playa",
     img: "./assets/img/casas/casa1.jpg",
@@ -42,6 +48,7 @@ const casas = [
     categoria: "barata",
   },
   {
+    id: 7,
     name: "Casa 3",
     description: "Una casa bonita en la ciudad",
     img: "./assets/img/casas/casa1.jpg",
@@ -49,6 +56,7 @@ const casas = [
     categoria: "list",
   },
   {
+    id: 8,
     name: "Casa 3",
     description: "Una casa bonita en la ciudad",
     img: "./assets/img/casas/casa1.jpg",
@@ -56,6 +64,8 @@ const casas = [
     categoria: "prefa",
   },
 ];
+
+const carrito = [];
 
 const sections = [
   { title: "Encuentra la casa ideal para ti", id: "houses-list" },
@@ -69,7 +79,6 @@ const renderHouses = (array, section) => {
   let housesHTML = "";
 
   for (const casa of array) {
-    console.log(casa)
     const houseHTML = `
         <div class="col">
                 <div class="card">
@@ -86,7 +95,7 @@ const renderHouses = (array, section) => {
                     <p>
                         ${casa.precio}
                     </p>
-                    <a href="#" class="btn btn-primary">ver detalles</a>
+                    <button class="btn btn-primary" data-houseid="${casa.id}">Agregar al carrito</button>
                   </div>
                 </div>
               </div>
@@ -119,6 +128,54 @@ const separarCasas = (array) => {
   for (const key in casasPorCategoria) {
     renderHouses(casasPorCategoria[key], `#houses-${key}`);
   }
+
+  const buttons = document.querySelectorAll(".card button");
+  console.log(buttons);
+  buttons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const houseId = e.target.getAttribute("data-houseid");
+      const casa = casas.find((casa) => casa.id === Number(houseId));
+      carrito.push(casa);
+      renderCarrito();
+    });
+  });
+};
+
+const eliminarDelCarrito = (e) => {
+  const index = e.target.getAttribute("data-index");
+  carrito.splice(index, 1);
+  renderCarrito();
+};
+
+const renderCarrito = () => {
+  const carritoElement = document.querySelector("#carrito");
+  const carritoTotal = document.querySelector("#carrito-total");
+  const totalCarrito = carrito.reduce((acc, casa) => {
+    // primera iteracion acc = 0, casa.precio = 100000
+    // segunda iteracion acc = 100000, casa.precio = 170000
+    // tercera iteracion acc = 270000
+    return acc + casa.precio;
+  }, 0); // inicia el valor en 0
+
+  console.log(totalCarrito);
+
+  let HTML = "";
+
+  carrito.forEach((casaEnCarrito, index) => {
+    const casaCarritoHTML = `
+    <h4 data-index="${index}">${casaEnCarrito.name}</h4>
+    <p>${casaEnCarrito.precio}</p>
+    `;
+    HTML += casaCarritoHTML;
+  });
+  carritoTotal.innerHTML = totalCarrito;
+  carritoElement.innerHTML = HTML;
+
+  const carritoElements = document.querySelectorAll("#carrito h4");
+
+  carritoElements.forEach((element) => {
+    element.addEventListener("click", eliminarDelCarrito);
+  });
 };
 
 const renderSections = () => {
